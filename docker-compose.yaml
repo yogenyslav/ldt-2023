@@ -1,0 +1,69 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    env_file:
+      - backend/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  redis:
+    image: docker.io/bitnami/redis:7.2
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development
+      # TODO: change no password
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./redis_data:/bitnami/redis/data
+    
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - backend/.env
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "10001:10001"
+    volumes:
+      - ./static/videos:/app/static/videos
+      - ./static/frames:/app/static/frames
+      - ./static/processed/videos:/app/static/processed/videos
+      - ./static/processed/frames:/app/static/processed/frames
+      - ./static/processed/frames_h:/app/static/processed/frames_h
+      - ./static/processed/frames_a:/app/static/processed/frames_a
+      - ./static/learn_frames:/app/static/learn_frames
+      - ./static/processed/s_frames:/app/static/processed/s_frames
+      - ./static/processed/s_frames_h:/app/static/processed/s_frames_h
+      - ./static/processed/s_frames_a:/app/static/processed/s_frames_a
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "10000:10000"
+
+  stream:
+    build:
+      context: ./stream
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+    - "10002:10002"
+
+volumes:
+  static:
+  redis_data:
+    driver: local
