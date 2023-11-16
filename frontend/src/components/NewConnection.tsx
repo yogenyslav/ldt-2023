@@ -75,21 +75,33 @@ function NewConnection(  {updateIsVideoSent}: { updateIsVideoSent: (newIsVideoSe
                                 fontFamily: 'Nunito Sans', textTransform: 'capitalize',
                                 '&.Mui-selected': {
                                     fontSize: '20px',
+                                    '@media (max-width: 500px)': {
+                                        fontSize: '15px !important'
+                                    }
                                 },
                                 transition: 'font-size 0.3s ease',
+                                '@media (max-width: 500px)': {
+                                    fontSize: '11px !important'
+                                }
                             }} />
                         <Tab label="Загрузить видео" {...a11yProps(1)}
                             sx={{
                                 fontFamily: 'Nunito Sans', textTransform: 'capitalize',
                                 '&.Mui-selected': {
                                     fontSize: '20px',
+                                    '@media (max-width: 500px)': {
+                                        fontSize: '15px !important'
+                                    }
                                 },
                                 transition: 'font-size 0.3s ease',
+                                '@media (max-width: 500px)': {
+                                    fontSize: '11px !important'
+                                }
                             }} />
                     </Tabs>
 
                 </AccordionSummary>
-                <AccordionDetails sx={{ height: '450px' }}>
+                <AccordionDetails sx={{ minHeight: '450px' }}>
                     <CustomTabPanel value={value} index={0}>
                         <ConnectionForm updateIsVideoSent={updateIsVideoSent}/>
                     </CustomTabPanel>

@@ -6,7 +6,7 @@ import StreamGrid from '../components/StreamGrid'
 function StreamGridView() {
     return (
         <>
-            <Box
+            <Box className='root-box'
                 sx={{
                     backgroundImage: `url(${decoration_lineLINK})`,
                     backgroundColor: '#DFDFED',

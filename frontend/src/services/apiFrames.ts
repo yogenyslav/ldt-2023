@@ -1,7 +1,7 @@
 import axios from "axios";
-import storage from "../utils/storage";
 import { BASE_URL } from '../config';
 import { IArea } from '@bmunozg/react-image-area'
+import { config } from "./apiConfig";
 
 
 interface InputObject extends IArea {
@@ -32,11 +32,6 @@ function dataURLtoFile(dataurl: string, filename: string) {
 const ApiFrames = {
 
     async sendFrames(data: InputObject, videoId: string, frame: string) {
-        let config = {
-            headers: {
-                Authorization: `Bearer ${storage.getToken()}`
-            }
-        }
         const formData = new FormData();
         Object.keys(data).forEach(key => {
             if (key !== 'isChanging' && key !== 'isNew' && key !== 'unit') {
@@ -47,6 +42,9 @@ const ApiFrames = {
         formData.append('frame', dataURLtoFile(frame, 'frame'));
         return await axios
             .post(`${BASE_URL}/api/v1/frames/learn`, formData, config)
+    },
+    async putRejectFrames(frameId: number) {
+        return await axios.put(`${BASE_URL}/api/v1/frames/ml/reject/${frameId}`, config);
     },
 };
 export default ApiFrames;

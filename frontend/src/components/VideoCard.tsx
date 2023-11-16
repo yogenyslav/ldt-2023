@@ -31,7 +31,7 @@ export default function VideoCard(props: Props) {
         return `${hours}:${minutes} ${day}-${month}-${year}`;
     }
     return (
-        <Card sx={{ width: '310px', boxShadow: '0px 0px 10px 5px rgba(0,0,0,0.1)', borderRadius: '15px', mt: 2, mb: 10, ml: 'auto', mr: 'auto' }} >
+        <Card className="video-card" sx={{ width: '310px', boxShadow: '0px 0px 10px 5px rgba(0,0,0,0.1)', borderRadius: '15px', mt: 2, mb: 10, ml: 'auto', mr: 'auto' }} >
             <CardMedia
                 sx={{ height: 175 }}
                 image={backgroundImg}

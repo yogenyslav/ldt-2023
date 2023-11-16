@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io"
 	"lct/internal/config"
 	"lct/internal/logging"
 	"lct/internal/model"
@@ -27,101 +28,62 @@ type MlRequest struct {
 }
 
 func ProcessVideoFrames(videoId int, videoSource string) {
-	// cli, _ := gocelery.NewCeleryClient(
-	// 	gocelery.NewRedisBroker(redisPool),
-	// 	&gocelery.RedisCeleryBackend{Pool: redisPool},
-	// 	1,
-	// )
-
-	// taskName := "worker.get_frames"
-
-	// asyncResult, err := cli.Delay(taskName, videoId, videoSource)
-	// if err != nil {
-	// 	logging.Log.Errorf("failed to run the task: %s", err)
-	// 	return
-	// }
-
-	// res, err := asyncResult.Get(1 * time.Hour)
-	// if err != nil {
-	// 	logging.Log.Errorf("failed to get task result: %s", err)
-	// 	return
-	// }
-
-	// logging.Log.Debugf("result: %+v of type %+v", res, reflect.TypeOf(res))
-
 	data := MlRequest{
 		VideoId:     videoId,
 		VideoSource: videoSource,
 	}
 	body, err := json.Marshal(&data)
 	if err != nil {
-		logging.Log.Errorf("failed to marshal ml request: %s", err)
+		logging.Log.Errorf("failed to marshal ml frames request: %s", err)
 		return
 	}
 	r, err := http.Post(config.Cfg.MlHost+"/frames", "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		logging.Log.Errorf("failed to send ml request: %s", err)
+		logging.Log.Errorf("failed to send ml frames request: %s", err)
 		return
 	}
 
 	if r.StatusCode != http.StatusOK {
-		logging.Log.Errorf("ml request returned status code %d", r.StatusCode)
+		logging.Log.Errorf("ml frames status code %d", r.StatusCode)
 		return
 	}
+
+	logging.Log.Debug("processing frames successfuly")
 }
 
 func ProcessVideoMl(videoId int, videoSource, fileName string, videoRepo model.VideoRepository, mlFrameRepo model.MlFrameRepository) {
-	// cli, _ := gocelery.NewCeleryClient(
-	// 	gocelery.NewRedisBroker(redisPool),
-	// 	&gocelery.RedisCeleryBackend{Pool: redisPool},
-	// 	1,
-	// )
-
-	// taskName := "worker.process_video"
-
-	// asyncResult, err := cli.Delay(taskName, videoId, videoSource)
-	// if err != nil {
-	// 	logging.Log.Errorf("failed to run the task: %s", err)
-	// 	return
-	// }
-
-	// res, err := asyncResult.Get(1 * time.Hour)
-	// if err != nil {
-	// 	logging.Log.Errorf("failed to get task result: %s", err)
-	// 	return
-	// }
-
-	// logging.Log.Debugf("result: %+v of type %+v", res, reflect.TypeOf(res))
-
-	// var resp MlResult
-	// if err := json.Unmarshal([]byte(res.(string)), &resp); err != nil {
-	// 	logging.Log.Errorf("failed to unmarshal ml result: %s", err)
-	// 	return
-	// }
-
 	data := MlRequest{
 		VideoId:     videoId,
 		VideoSource: videoSource,
 	}
 	body, err := json.Marshal(&data)
 	if err != nil {
-		logging.Log.Errorf("failed to marshal ml request: %s", err)
+		logging.Log.Errorf("failed to marshal ml video request: %s", err)
 		return
 	}
 	r, err := http.Post(config.Cfg.MlHost+"/video", "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		logging.Log.Errorf("failed to send ml request: %s", err)
+		logging.Log.Errorf("failed to send ml video request: %s", err)
 		return
 	}
+	defer r.Body.Close()
 
 	if r.StatusCode != http.StatusOK {
-		logging.Log.Errorf("ml request returned status code %d", r.StatusCode)
+		logging.Log.Errorf("ml video request returned status code %d", r.StatusCode)
 		return
 	}
 
 	var resp MlResult
-	if err := json.NewDecoder(r.Body).Decode(&resp); err != nil {
-		logging.Log.Errorf("failed to unmarshal ml result: %s", err)
+	raw, err := io.ReadAll(r.Body)
+	if err != nil {
+		return
+	}
+	rawFixed := string(raw)
+	rawFixed = rawFixed[1 : len(rawFixed)-1]
+	rawFixed = strings.ReplaceAll(rawFixed, "\\", "")
+	logging.Log.Debug(rawFixed)
+	if err := json.Unmarshal([]byte(rawFixed), &resp); err != nil {
+		logging.Log.Errorf("failed to unmarshal ml video result: %s", err)
 		return
 	}
 
@@ -129,21 +91,21 @@ func ProcessVideoMl(videoId int, videoSource, fileName string, videoRepo model.V
 	if len(resp.Cadrs) != 0 {
 		logging.Log.Debug("inserting cadrs ml frames")
 		if err := mlFrameRepo.InsertMany(c, resp.Cadrs); err != nil {
-			logging.Log.Errorf("failed to insert cadrs ml frames: %s", err)
+			logging.Log.Errorf("failed to insert cadrs ml video frames: %s", err)
 			return
 		}
 	}
 	if len(resp.Humans) != 0 {
 		logging.Log.Debug("inserting humans ml frames")
 		if err := mlFrameRepo.InsertMany(c, resp.Humans); err != nil {
-			logging.Log.Errorf("failed to insert humans ml frames: %s", err)
+			logging.Log.Errorf("failed to insert humans ml video frames: %s", err)
 			return
 		}
 	}
 	if len(resp.Active) != 0 {
 		logging.Log.Debug("inserting active ml frames")
 		if err := mlFrameRepo.InsertMany(c, resp.Active); err != nil {
-			logging.Log.Errorf("failed to insert active ml frames: %s", err)
+			logging.Log.Errorf("failed to insert active ml video frames: %s", err)
 			return
 		}
 	}
@@ -153,6 +115,7 @@ func ProcessVideoMl(videoId int, videoSource, fileName string, videoRepo model.V
 
 	path := "static/processed/videos/" + resp.ProcessedSource
 	fileNameAvi := strings.Replace(fileName, ".mp4", ".avi", 1)
+	fileNameAvi = strings.Replace(fileName, ".MP4", ".avi", 1)
 	if _, err := os.Stat(path + "/" + fileNameAvi); os.IsNotExist(err) {
 		logging.Log.Debugf("file %s does not exist", path+"/"+fileNameAvi)
 	} else {
@@ -168,31 +131,11 @@ func ProcessVideoMl(videoId int, videoSource, fileName string, videoRepo model.V
 		logging.Log.Errorf("failed to set video status as processed: %s", err)
 		return
 	}
+
+	logging.Log.Debug("processing video successfuly")
 }
 
 func ProcessStream(videoId int, videoSource string, timeout int) {
-	// cli, _ := gocelery.NewCeleryClient(
-	// 	gocelery.NewRedisBroker(redisPool),
-	// 	&gocelery.RedisCeleryBackend{Pool: redisPool},
-	// 	1,
-	// )
-
-	// taskName := "worker.process_stream"
-
-	// asyncResult, err := cli.Delay(taskName, videoId, videoSource)
-	// if err != nil {
-	// 	logging.Log.Errorf("failed to run the task: %s", err)
-	// 	return
-	// }
-
-	// res, err := asyncResult.Get(1 * time.Second)
-	// if err != nil {
-	// 	logging.Log.Errorf("failed to get task result: %s", err)
-	// 	return
-	// }
-
-	// logging.Log.Debugf("result: %+v of type %+v", res, reflect.TypeOf(res))
-
 	data := MlRequest{
 		VideoId:     videoId,
 		VideoSource: videoSource,
@@ -200,13 +143,13 @@ func ProcessStream(videoId int, videoSource string, timeout int) {
 	}
 	body, err := json.Marshal(&data)
 	if err != nil {
-		logging.Log.Errorf("failed to marshal ml request: %s", err)
+		logging.Log.Errorf("failed to marshal ml stream request: %s", err)
 		return
 	}
 
 	r, err := http.Post(config.Cfg.MlHost+"/stream", "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		logging.Log.Errorf("failed to send ml request: %s", err)
+		logging.Log.Errorf("failed to send ml stream request: %s", err)
 		return
 	}
 
@@ -214,4 +157,6 @@ func ProcessStream(videoId int, videoSource string, timeout int) {
 		logging.Log.Errorf("ml request returned status code %d", r.StatusCode)
 		return
 	}
+
+	logging.Log.Debug("processing stream successfuly")
 }

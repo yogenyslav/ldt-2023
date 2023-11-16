@@ -30,7 +30,7 @@ function Login() {
 
     return (
         <>
-            <Box
+            <Box className='root-box'
                 sx={{
                     backgroundImage: `url(${decoration_lineLINK})`,
                     backgroundColor: '#DFDFED',
@@ -41,11 +41,11 @@ function Login() {
                     backgroundSize: '100vw',
                 }}
             >
-                <Container>
+                <Container className='main-container'>
                     <AppBar isAuthorized={false} isAdmin={false} />
                     <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginTop: '100px' }}>
                         <LoginForm updateAuthorized={updateAuthorized} />
-                        <img width="350px" height="350px" src={logo} alt="logo" />
+                        <img width="350px" height="350px" src={logo} alt="logo" className="login-image"/>
                     </Box>
                 </Container>
             </Box>

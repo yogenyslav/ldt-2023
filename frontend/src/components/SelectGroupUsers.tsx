@@ -47,7 +47,9 @@ export default function SingleSelectPlaceholder({ updateGroupId, fetchedGroups }
     }, [groupId]);
 
     return (
-        <FormControl sx={{ width: '252px', mt: 3, backgroundColor: '#DFDFED' }}>
+        <>
+        {fetchedGroups &&
+            <FormControl sx={{ width: '252px', mt: 3, backgroundColor: '#DFDFED' }}>
             <Select
                 displayEmpty
                 value={groupName}
@@ -67,7 +69,7 @@ export default function SingleSelectPlaceholder({ updateGroupId, fetchedGroups }
                 <MenuItem disabled value="">
                     Выберите группу
                 </MenuItem>
-                {fetchedGroups?.map((group) => (
+                {fetchedGroups.map((group) => (
                     <MenuItem
                         key={group.id}
                         value={group.title}
@@ -78,5 +80,7 @@ export default function SingleSelectPlaceholder({ updateGroupId, fetchedGroups }
                 ))}
             </Select>
         </FormControl>
+        }
+        </>
     );
 }

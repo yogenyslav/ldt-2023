@@ -76,7 +76,7 @@ interface LabelingData {
 }
 
 interface FrameData {
-    id: string;
+    id: number;
     videoId: number;
     fileName: string;
     timeCode: number;
@@ -180,7 +180,7 @@ function CurrentVideo() {
 
     return (
         <>
-            <Box
+            <Box className='root-box'
                 sx={{
                     backgroundImage: `url(${decoration_lineLINK})`,
                     backgroundColor: '#DFDFED',
@@ -191,7 +191,7 @@ function CurrentVideo() {
                     backgroundSize: '100vw',
                 }}
             >
-                <Container>
+                <Container className='main-container'>
                     <AppBar isAuthorized={isAuthorized} isAdmin={isAdmin} />
                     <>
                         {!isLoading &&
@@ -221,21 +221,33 @@ function CurrentVideo() {
                                                         fontFamily: 'Nunito Sans', textTransform: 'capitalize',
                                                         '&.Mui-selected': {
                                                             fontSize: '20px',
+                                                            '@media (max-width: 500px)': {
+                                                                fontSize: '15px !important'
+                                                            }
                                                         },
                                                         transition: 'font-size 0.3s ease',
+                                                        '@media (max-width: 500px)': {
+                                                            fontSize: '11px !important'
+                                                        },
                                                     }} />
                                                 <Tab label="Исходное видео" {...a11yProps(1)}
                                                     sx={{
                                                         fontFamily: 'Nunito Sans', textTransform: 'capitalize',
                                                         '&.Mui-selected': {
                                                             fontSize: '20px',
+                                                            '@media (max-width: 500px)': {
+                                                                fontSize: '15px !important'
+                                                            }
                                                         },
                                                         transition: 'font-size 0.3s ease',
+                                                        '@media (max-width: 500px)': {
+                                                            fontSize: '11px !important'
+                                                        }
                                                     }} />
                                             </Tabs>
 
                                         </AccordionSummary>
-                                        <AccordionDetails sx={{ height: '500px' }}>
+                                        <AccordionDetails sx={{ minHeight: '500px' }}>
                                             <CustomTabPanel value={value} index={0}>
                                                 <VideoPlayer onGroupChange={fetchVideoData}
                                                     videoMlRef={videoMlRef} videoTitle={videoData?.title} groupIds={videoData?.groupIds}
@@ -252,7 +264,7 @@ function CurrentVideo() {
                                 {(value === 1) &&
                                     <Box sx={{ mt: 5, mb: 3 }}>
                                         <Paper sx={{ marginTop: 3, borderRadius: '15px', backgroundColor: 'rgba(255, 255, 255, 0.5)', border: '1px solid white' }}>
-                                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                                                 <Box sx={{ m: 3, maxWidth: '700px' }}>
                                                     <Typography
                                                         variant="h2"
@@ -323,8 +335,8 @@ function CurrentVideo() {
                                                         overflow: 'auto',
                                                         '& ul': { padding: 0 },
                                                     }}>
-                                                        {
-                                                            labelingData?.map((data) => {
+                                                        {labelingData && 
+                                                            labelingData.map((data) => {
                                                                 return (
                                                                     <ListItem sx={{ overflow: 'auto' }}>
                                                                         <ListItemIcon>
@@ -366,10 +378,10 @@ function CurrentVideo() {
                                         >
                                             Объекты незаконной торговли:
                                         </Typography>
-                                        {
-                                            thumbnails?.map((frame) => {
+                                        {thumbnails &&
+                                            thumbnails.map((frame) => {
                                                 return (
-                                                    <FrameCard sources={frame.fileName.split(';')}
+                                                    <FrameCard sources={frame.fileName.split(';')} frameId={frame.id}
                                                         classId={frame.detectedClassId} timecodeOrig={frame.timeCode} updateTimecodeOrig={updateTimecodeOrig}
                                                         timecode={frame.timeCodeMl} videoMlRef={videoMlRef} />
                                                 );

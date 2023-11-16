@@ -303,12 +303,18 @@ func (vr *videoPgRepository) SetCompleted(c context.Context, videoId int, proces
 		set status = 'completed'
 		where id = $1
 	`, videoId)
+	if err != nil {
+		return err
+	}
 
 	_, err = tx.Exec(c, `
 		update `+model.VideosTableName+`
-		set processedSource = $1
+		set processedSource = $1, updatedAt = current_timestamp
 		where id = $2
 	`, processedSource, videoId)
+	if err != nil {
+		return err
+	}
 
 	return tx.Commit(c)
 }

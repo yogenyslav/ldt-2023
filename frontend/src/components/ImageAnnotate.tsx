@@ -72,12 +72,12 @@ function ImageAnnotate({ imageUrl, updateLabelingData }: ImageAnnotateProps) {
 
   return (
     <div>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         <AreaSelector
           areas={tempArea ? [...areas, tempArea] : areas}
           onChange={onChangeHandler}
         >
-          <img src={imageUrl} alt='my image' width='800px' style={{ marginLeft: '30px' }} />
+          <img src={imageUrl} alt='my image' style={{ maxWidth: '800px', marginBottom: '30px', width: '100%'}} />
         </AreaSelector>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column', height: '200px', margin: '0 30px' }}>
           <Select
@@ -86,7 +86,7 @@ function ImageAnnotate({ imageUrl, updateLabelingData }: ImageAnnotateProps) {
           >
             <MenuItem value={1}>Воздушные шарики/игрушки</MenuItem>
             <MenuItem value={2}>Торговая тележка/палатка</MenuItem>
-            <MenuItem value={3}>Человек</MenuItem>
+            <MenuItem value={3}>Продавец</MenuItem>
             <MenuItem value={4}>Иной объект</MenuItem>
           </Select>
           <Button

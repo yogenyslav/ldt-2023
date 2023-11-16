@@ -60,7 +60,9 @@ export default function selectGroupList({ updateGroupId, groupIds }: GroupSelect
     }, []);
 
     return (
-        <FormControl sx={{ width: '252px', mt: 3, backgroundColor: '#DFDFED' }}>
+        <>
+        {fetchedGroups &&
+            <FormControl sx={{ width: '252px', mt: 3, backgroundColor: '#DFDFED' }}>
             <Select
                 displayEmpty
                 value={groupName}
@@ -80,7 +82,7 @@ export default function selectGroupList({ updateGroupId, groupIds }: GroupSelect
                 <MenuItem disabled value="">
                     Выберите группу
                 </MenuItem>
-                {fetchedGroups?.map((group) => (
+                {fetchedGroups.map((group) => (
                     <MenuItem
                         key={group.id}
                         value={group.title}
@@ -91,5 +93,7 @@ export default function selectGroupList({ updateGroupId, groupIds }: GroupSelect
                 ))}
             </Select>
         </FormControl>
+        }
+        </>
     );
 }

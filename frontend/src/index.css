@@ -39,8 +39,33 @@ html body {
 }
 
 
-/* @media (min-width: 1400px) {
-  .MuiContainer-root.MuiContainer-maxWidthLg.css-1oqqzyl-MuiContainer-root {
-    max-width: 1400px;
+@media (max-width: 1000px) {
+  .login-image{
+    display: none;
   }
-} */
+}
+
+@media (max-width: 670px) {
+  .video-card{
+    width: 80%;
+  }
+
+  #root {
+    padding: 0 15px;
+  }
+
+  .root-box {
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 490px) {
+  #root {
+    padding: 0 5px;
+  }
+
+  .button-download-file {
+    width: 120% !important;
+    margin-left: -20px !important;
+  }
+}

@@ -135,8 +135,13 @@ function VideoPlayer(props: Props) {
         <>
             {videoMlLink &&
                 <>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                        <Box className="video">
+                    <Box sx={{
+                        display: 'flex', justifyContent: 'space-between', width: '100%', flexWrap: 'wrap',
+                        '@media (max-width: 1200px)': {
+                            justifyContent: 'center !important'
+                        },
+                    }}>
+                        <Box className="video" sx={{ mb: 2 }}>
                             {!isAdmin &&
                                 <Typography
                                     sx={{
@@ -151,10 +156,18 @@ function VideoPlayer(props: Props) {
                                 >
                                     Текущее видео: {videoTitle}
                                 </Typography>}
-                            <video controls style={{ maxWidth: '700px', maxHeight: '400px' }} ref={videoMlRef} src={videoMlLink}></video>
+                            <video controls style={{  maxHeight: '400px', width: '100%' }} ref={videoMlRef} src={videoMlLink}></video>
                         </Box>
+
                         {isAdmin &&
-                            <Paper sx={{ width: '250px', p: 2 }} elevation={20}>
+                            <Paper sx={{ width: '30%', p: 2,
+                            '@media (max-width: 1200px)': {
+                                width: '50%'
+                            },
+                            '@media (max-width: 800px)': {
+                                width: '80%'
+                            },
+                            }} elevation={20}>
                                 <Box>
                                     <Typography
                                         sx={{
@@ -180,6 +193,8 @@ function VideoPlayer(props: Props) {
                                             paddingRight: 2,
                                             marginTop: 2,
                                             marginBottom: 2,
+                                            wordWrap: 'break-word',
+                                            wordBreak: 'break-all',
                                         }}
                                     >
                                         {videoTitle}

@@ -82,7 +82,12 @@ function VideoPlayer(props: Props) {
         <>
             {videoLink &&
                 <>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                   <Box sx={{
+                        display: 'flex', justifyContent: 'space-between', width: '100%', flexWrap: 'wrap',
+                        '@media (max-width: 1200px)': {
+                            justifyContent: 'center !important'
+                        },
+                    }}>
                         <Box className="video">
                             <video style={{ maxWidth: '700px', maxHeight: '400px' }} ref={videoRef} src={videoLink} controls></video>
                         </Box>
@@ -100,7 +105,7 @@ function VideoPlayer(props: Props) {
                                 maxHeight: 400,
                                 '& ul': { padding: 0 },
                             }}>
-                                {!isLoading ? thumbnails?.map((image, index) => {
+                                {(!isLoading && thumbnails) ? thumbnails.map((image, index) => {
                                     const timecode = videoRef.current?.duration ? formatTime(index * videoRef.current.duration / numberOfThumbnails) : '';
                                     return (
                                         <ListItem key={index} ref={(el) => thumbnailRefs.current[index] = el}

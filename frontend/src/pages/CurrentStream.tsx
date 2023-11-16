@@ -102,7 +102,7 @@ function CurrentStream() {
         const interval = setInterval(() => {
             fetchVideoMlFrames();
             setCount(count + 1);
-        }, 5000);
+        }, 20000);
         return () => clearInterval(interval);
     }, []);
 
@@ -219,7 +219,7 @@ function CurrentStream() {
 
     return (
         <>
-            <Box
+            <Box className='root-box'
                 sx={{
                     backgroundImage: `url(${decoration_lineLINK})`,
                     backgroundColor: '#DFDFED',
@@ -230,7 +230,7 @@ function CurrentStream() {
                     backgroundSize: '100vw',
                 }}
             >
-                <Container>
+                <Container className='main-container'>
                     <AppBar isAuthorized={isAuthorized} isAdmin={isAdmin} />
                     {!isLoading &&
                         <Box>
@@ -252,7 +252,8 @@ function CurrentStream() {
                                     </Typography>}
                                 {streamId &&
                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                                        <Box sx={{ mt: 3, maxWidth: '900px' }}>
+                                        <Box sx={{ mt: 3, 
+                                            maxWidth: isAdmin ? '900px' : '100%' }}>
                                             {checked ?
                                                 <StreamPlayerHlsll hls_url={`${STREAM_URL}/stream/${streamId}/channel/0/hlsll/live/index.m3u8`} /> :
                                                 <StreamPlayerHls hls_url={`${STREAM_URL}/stream/${streamId}/channel/0/hls/live/index.m3u8`} />}
@@ -295,173 +296,176 @@ function CurrentStream() {
                                                 </Typography>
                                             </Box>
                                         </Box>
-                                        <Paper sx={{ width: '250px', p: 2, height: '400px', margin: 2, marginTop: 10 }} elevation={20}>
-                                            <Box>
-                                                <Typography
-                                                    sx={{
-                                                        fontFamily: 'Nunito Sans',
-                                                        fontWeight: 700,
-                                                        fontSize: '15px',
-                                                        color: '#0B0959',
-                                                        textDecoration: 'none',
-                                                        marginRight: 0,
-                                                        paddingRight: 2,
-                                                    }}
-                                                >
-                                                    Текущее подключение:
-                                                </Typography>
-                                                <Typography
-                                                    sx={{
-                                                        fontFamily: 'Nunito Sans',
-                                                        fontWeight: 700,
-                                                        fontSize: '25px',
-                                                        color: '#0B0959',
-                                                        textDecoration: 'none',
-                                                        marginRight: 0,
-                                                        paddingRight: 2,
-                                                        marginTop: 2,
-                                                        marginBottom: 2,
-                                                    }}
-                                                >
-                                                    {videoData?.name}
-                                                </Typography>
-                                            </Box>
-                                            {videoBackData &&
-                                                <>
-                                                    <Accordion sx={{ width: '100%', backgroundColor: '#DFDFED' }}>
-                                                        <AccordionSummary
-                                                            expandIcon={<ExpandMoreIcon />}
-                                                            aria-controls="panel1a-content"
-                                                            id="panel1a-header"
+                                        {isAdmin &&
+                                            <>
+                                                <Paper sx={{ width: '250px', p: 2, height: '400px', margin: 2, marginTop: 10 }} elevation={20}>
+                                                    <Box>
+                                                        <Typography
+                                                            sx={{
+                                                                fontFamily: 'Nunito Sans',
+                                                                fontWeight: 700,
+                                                                fontSize: '15px',
+                                                                color: '#0B0959',
+                                                                textDecoration: 'none',
+                                                                marginRight: 0,
+                                                                paddingRight: 2,
+                                                            }}
                                                         >
-                                                            <Typography>Группы</Typography>
-                                                        </AccordionSummary>
-                                                        <AccordionDetails>
-                                                            <Box>
-                                                                {videoBackData?.groupIds.map((id) => {
-                                                                    return (
-                                                                        <>
-                                                                            <Divider />
-                                                                            <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'no-wrap', minHeight: '40px' }}>
-                                                                                <Typography
-                                                                                    sx={{
-                                                                                        fontFamily: 'Nunito Sans',
-                                                                                        fontWeight: 700,
-                                                                                        fontSize: '15px',
-                                                                                        color: '#0B0959',
-                                                                                        textDecoration: 'none',
-                                                                                        marginRight: 0,
-                                                                                        padding: 0.5,
-                                                                                    }}
-                                                                                >
-                                                                                    {id}. {fetchedGroups?.find(group => group.id === id)?.title}
-                                                                                </Typography>
+                                                            Текущее подключение:
+                                                        </Typography>
+                                                        <Typography
+                                                            sx={{
+                                                                fontFamily: 'Nunito Sans',
+                                                                fontWeight: 700,
+                                                                fontSize: '25px',
+                                                                color: '#0B0959',
+                                                                textDecoration: 'none',
+                                                                marginRight: 0,
+                                                                paddingRight: 2,
+                                                                marginTop: 2,
+                                                                marginBottom: 2,
+                                                            }}
+                                                        >
+                                                            {videoData?.name}
+                                                        </Typography>
+                                                    </Box>
+                                                    {videoBackData &&
+                                                        <>
+                                                            <Accordion sx={{ width: '100%', backgroundColor: '#DFDFED' }}>
+                                                                <AccordionSummary
+                                                                    expandIcon={<ExpandMoreIcon />}
+                                                                    aria-controls="panel1a-content"
+                                                                    id="panel1a-header"
+                                                                >
+                                                                    <Typography>Группы</Typography>
+                                                                </AccordionSummary>
+                                                                <AccordionDetails>
+                                                                    <Box>
+                                                                        {videoBackData?.groupIds.map((id) => {
+                                                                            return (
+                                                                                <>
+                                                                                    <Divider />
+                                                                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'no-wrap', minHeight: '40px' }}>
+                                                                                        <Typography
+                                                                                            sx={{
+                                                                                                fontFamily: 'Nunito Sans',
+                                                                                                fontWeight: 700,
+                                                                                                fontSize: '15px',
+                                                                                                color: '#0B0959',
+                                                                                                textDecoration: 'none',
+                                                                                                marginRight: 0,
+                                                                                                padding: 0.5,
+                                                                                            }}
+                                                                                        >
+                                                                                            {id}. {fetchedGroups?.find(group => group.id === id)?.title}
+                                                                                        </Typography>
 
-                                                                                <IconButton key={id} onClick={() => {
-                                                                                    setDeleteGroupId(id);
-                                                                                    handleOpen();
-                                                                                }} sx={{ color: '#0B0959' }}>
-                                                                                    <CloseIcon />
-                                                                                </IconButton>
-                                                                            </Box>
-                                                                            <Divider />
-                                                                        </>
-                                                                    )
-                                                                })}
-                                                                <Button onClick={handleOpenDialogNewGroup}
-                                                                    style={{ color: 'white', fontFamily: 'Nunito Sans', backgroundColor: '#0B0959', borderRadius: '8px', textTransform: 'capitalize' }}
-                                                                >Добавить камеру в группу</Button>
-                                                            </Box>
-                                                        </AccordionDetails>
-                                                    </Accordion>
+                                                                                        <IconButton key={id} onClick={() => {
+                                                                                            setDeleteGroupId(id);
+                                                                                            handleOpen();
+                                                                                        }} sx={{ color: '#0B0959' }}>
+                                                                                            <CloseIcon />
+                                                                                        </IconButton>
+                                                                                    </Box>
+                                                                                    <Divider />
+                                                                                </>
+                                                                            )
+                                                                        })}
+                                                                        <Button onClick={handleOpenDialogNewGroup}
+                                                                            style={{ color: 'white', fontFamily: 'Nunito Sans', backgroundColor: '#0B0959', borderRadius: '8px', textTransform: 'capitalize' }}
+                                                                        >Добавить камеру в группу</Button>
+                                                                    </Box>
+                                                                </AccordionDetails>
+                                                            </Accordion>
 
-                                                    <Dialog
-                                                        open={openDialog}
-                                                        onClose={handleClose}>
-                                                        <DialogTitle>
-                                                            <Typography
-                                                                sx={{
-                                                                    fontFamily: 'Nunito Sans',
-                                                                    fontWeight: 700,
-                                                                    fontSize: '15px',
-                                                                    color: '#0B0959',
-                                                                    textDecoration: 'none',
-                                                                    marginRight: 0,
-                                                                    paddingRight: 2,
-                                                                }}
-                                                            >
-                                                                {`Вы точно хотите удалить подключение из группы?`}
-                                                            </Typography>
-                                                        </DialogTitle>
-                                                        <DialogActions>
-                                                            <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
-                                                                onClick={handleClose}>Выйти</Button>
-                                                            <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
-                                                                onClick={handleDeleteGroup}>Удалить</Button>
-                                                        </DialogActions>
-                                                    </Dialog>
+                                                            <Dialog
+                                                                open={openDialog}
+                                                                onClose={handleClose}>
+                                                                <DialogTitle>
+                                                                    <Typography
+                                                                        sx={{
+                                                                            fontFamily: 'Nunito Sans',
+                                                                            fontWeight: 700,
+                                                                            fontSize: '15px',
+                                                                            color: '#0B0959',
+                                                                            textDecoration: 'none',
+                                                                            marginRight: 0,
+                                                                            paddingRight: 2,
+                                                                        }}
+                                                                    >
+                                                                        {`Вы точно хотите удалить подключение из группы?`}
+                                                                    </Typography>
+                                                                </DialogTitle>
+                                                                <DialogActions>
+                                                                    <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
+                                                                        onClick={handleClose}>Выйти</Button>
+                                                                    <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
+                                                                        onClick={handleDeleteGroup}>Удалить</Button>
+                                                                </DialogActions>
+                                                            </Dialog>
 
-                                                    <Dialog
-                                                        open={openDialogNewGroup}
-                                                        onClose={handleCloseNewGroup}>
-                                                        <DialogTitle>
-                                                            <Typography
-                                                                sx={{
-                                                                    fontFamily: 'Nunito Sans',
-                                                                    fontWeight: 700,
-                                                                    fontSize: '15px',
-                                                                    color: '#0B0959',
-                                                                    textDecoration: 'none',
-                                                                    marginRight: 0,
-                                                                    paddingRight: 2,
-                                                                }}
-                                                            >
-                                                                Добавить камеру в группу:
-                                                            </Typography>
-                                                        </DialogTitle>
-                                                        <DialogContent>
-                                                            <SelectGroupList updateGroupId={updateGroupId} groupIds={videoBackData?.groupIds} />
-                                                        </DialogContent>
-                                                        <DialogActions>
-                                                            <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
-                                                                onClick={handleCloseNewGroup}>Закрыть</Button>
-                                                            <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
-                                                                onClick={handleAddGroup}>Добавить</Button>
-                                                        </DialogActions>
-                                                    </Dialog>
-                                                </>}
-                                            <Button
-                                                onClick={() => { setOpenDeleteDialog(true) }}
-                                                style={{ marginTop: 40, color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: '#E9CECE', borderRadius: '8px', textTransform: 'capitalize', marginRight: 20, width: '250px', height: '40px' }}
-                                            >
-                                                Удалить подключение
-                                            </Button>
-                                            <Dialog
-                                                open={openDeleteDialog}
-                                                onClose={() => { setOpenDeleteDialog(false) }}>
-                                                <DialogTitle>
-                                                    <Typography
-                                                        sx={{
-                                                            fontFamily: 'Nunito Sans',
-                                                            fontWeight: 700,
-                                                            fontSize: '15px',
-                                                            color: '#0B0959',
-                                                            textDecoration: 'none',
-                                                            marginRight: 0,
-                                                            paddingRight: 2,
-                                                        }}
+                                                            <Dialog
+                                                                open={openDialogNewGroup}
+                                                                onClose={handleCloseNewGroup}>
+                                                                <DialogTitle>
+                                                                    <Typography
+                                                                        sx={{
+                                                                            fontFamily: 'Nunito Sans',
+                                                                            fontWeight: 700,
+                                                                            fontSize: '15px',
+                                                                            color: '#0B0959',
+                                                                            textDecoration: 'none',
+                                                                            marginRight: 0,
+                                                                            paddingRight: 2,
+                                                                        }}
+                                                                    >
+                                                                        Добавить камеру в группу:
+                                                                    </Typography>
+                                                                </DialogTitle>
+                                                                <DialogContent>
+                                                                    <SelectGroupList updateGroupId={updateGroupId} groupIds={videoBackData?.groupIds} />
+                                                                </DialogContent>
+                                                                <DialogActions>
+                                                                    <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
+                                                                        onClick={handleCloseNewGroup}>Закрыть</Button>
+                                                                    <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
+                                                                        onClick={handleAddGroup}>Добавить</Button>
+                                                                </DialogActions>
+                                                            </Dialog>
+                                                        </>}
+                                                    <Button
+                                                        onClick={() => { setOpenDeleteDialog(true) }}
+                                                        style={{ marginTop: 40, color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: '#E9CECE', borderRadius: '8px', textTransform: 'capitalize', marginRight: 20, width: '250px', height: '40px' }}
                                                     >
-                                                        {`Вы точно хотите удалить подключение?`}
-                                                    </Typography>
-                                                </DialogTitle>
-                                                <DialogActions>
-                                                    <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
-                                                        onClick={() => { setOpenDeleteDialog(false) }}>Выйти</Button>
-                                                    <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
-                                                        onClick={handleDeleteVideo}>Удалить</Button>
-                                                </DialogActions>
-                                            </Dialog>
-                                        </Paper>
+                                                        Удалить подключение
+                                                    </Button>
+                                                    <Dialog
+                                                        open={openDeleteDialog}
+                                                        onClose={() => { setOpenDeleteDialog(false) }}>
+                                                        <DialogTitle>
+                                                            <Typography
+                                                                sx={{
+                                                                    fontFamily: 'Nunito Sans',
+                                                                    fontWeight: 700,
+                                                                    fontSize: '15px',
+                                                                    color: '#0B0959',
+                                                                    textDecoration: 'none',
+                                                                    marginRight: 0,
+                                                                    paddingRight: 2,
+                                                                }}
+                                                            >
+                                                                {`Вы точно хотите удалить подключение?`}
+                                                            </Typography>
+                                                        </DialogTitle>
+                                                        <DialogActions>
+                                                            <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
+                                                                onClick={() => { setOpenDeleteDialog(false) }}>Выйти</Button>
+                                                            <Button style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: 'white', borderRadius: '8px' }}
+                                                                onClick={handleDeleteVideo}>Удалить</Button>
+                                                        </DialogActions>
+                                                    </Dialog>
+                                                </Paper>
+                                            </>}
                                     </Box>}
                             </Paper>
 
@@ -481,8 +485,8 @@ function CurrentStream() {
                                 >
                                     Объекты незаконной торговли:
                                 </Typography>
-                                {
-                                    thumbnails?.map((source) => {
+                                { thumbnails &&
+                                    thumbnails.map((source) => {
                                         return (
                                             <FrameCameraCard source={source} />
                                         );

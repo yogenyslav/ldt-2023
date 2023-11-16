@@ -18,7 +18,7 @@ np.random.seed(42)
 torch.manual_seed(42)
 
 names = {0: "animal", 1: "balloon", 2: "cart", 3: "person"}
-base_path = ".."
+base_path = "."
 
 
 class MlResult(BaseModel):
@@ -29,7 +29,7 @@ class MlResult(BaseModel):
     detectedClassId: int
 
 
-def process(video_id: int, video_path: str, timeout: int, rtsp: bool = False):
+def process(video_id: int, video_path: str, timeout: int = 0, rtsp: bool = False):
     model = YOLO("weights/model.pt")
     model_predictor = RTDETR("weights/model_predictor.pt")
     model_cart = YOLO("weights/yolov8n.pt")

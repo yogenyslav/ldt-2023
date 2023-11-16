@@ -296,7 +296,7 @@ function Users() {
     return (
         <> {!isLoading && fetchedGroups &&
             <>
-                <Box
+                <Box className='root-box'
                     sx={{
                         backgroundImage: `url(${decoration_lineLINK})`,
                         backgroundColor: '#DFDFED',
@@ -307,7 +307,7 @@ function Users() {
                         backgroundSize: '100vw',
                     }}
                 >
-                    <Container>
+                    <Container className='main-container'>
                         <AppBar isAuthorized={true} isAdmin={isAdmin} />
                         <>
                             <Box sx={{ mt: 3, mb: 3 }}>

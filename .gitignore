@@ -9,3 +9,4 @@ runs
 .DS_Store
 stream_config.json
 .env
+static

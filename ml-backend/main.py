@@ -1,6 +1,6 @@
 import os
 import cv2
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
@@ -8,8 +8,13 @@ from ml import process, MlResult, base_path
 
 load_dotenv(".env")
 
-
-router = APIRouter()
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost", "http://localhost:10001"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class RequestData(BaseModel):
@@ -25,23 +30,25 @@ class ResponseData(BaseModel):
     processedSource: str
 
 
-@router.post("/video")
+@app.post("/video")
 async def process_video(data: RequestData):
     res = process(data.videoId, data.videoSource)
 
     processed_source = os.listdir(f"{base_path}/static/processed/videos")
     processed_source.sort()
-    return ResponseData(
+    response = ResponseData(
         cadrs=res[0], humans=res[1], active=res[2], processedSource=processed_source[-1]
     ).model_dump_json()
+    print(response)
+    return response
 
 
-@router.post("/stream")
+@app.post("/stream")
 async def process_stream(data: RequestData):
     process(data.videoId, data.videoSource, data.timeout, rtsp=True)
 
 
-@router.post("/frames")
+@app.post("/frames")
 async def process_frames(data: RequestData):
     cap = cv2.VideoCapture(f"{base_path}/{data.videoSource}")
     try:
@@ -68,10 +75,3 @@ async def process_frames(data: RequestData):
             break
 
     cap.release()
-
-
-def create_app() -> FastAPI:
-    _app = FastAPI()
-    _app.add_middleware(
-        CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
-    )

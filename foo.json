@@ -1,0 +1,89 @@
+{
+    "cadrs": [
+        {
+            "fileName": [
+                "./static/processed/frames/15/1.jpg",
+                "./static/processed/frames/15/3.jpg",
+                "./static/processed/frames/15/9.jpg",
+                "./static/processed/frames/15/18.jpg",
+                "./static/processed/frames/15/21.jpg",
+                "./static/processed/frames/15/119.jpg"
+            ],
+            "videoId": 15,
+            "timeCode": 11.9,
+            "timeCodeMl": 3.966666666666667,
+            "detectedClassId": 1
+        },
+        {
+            "fileName": [
+                "./static/processed/frames/15/1.jpg"
+            ],
+            "videoId": 15,
+            "timeCode": 0.1,
+            "timeCodeMl": 0.03333333333333333,
+            "detectedClassId": 1
+        },
+        {
+            "fileName": [
+                "./static/processed/frames/15/3.jpg",
+                "./static/processed/frames/15/4.jpg",
+                "./static/processed/frames/15/5.jpg",
+                "./static/processed/frames/15/6.jpg",
+                "./static/processed/frames/15/7.jpg",
+                "./static/processed/frames/15/8.jpg",
+                "./static/processed/frames/15/9.jpg",
+                "./static/processed/frames/15/10.jpg",
+                "./static/processed/frames/15/11.jpg",
+                "./static/processed/frames/15/12.jpg",
+                "./static/processed/frames/15/13.jpg",
+                "./static/processed/frames/15/14.jpg",
+                "./static/processed/frames/15/15.jpg",
+                "./static/processed/frames/15/16.jpg",
+                "./static/processed/frames/15/17.jpg",
+                "./static/processed/frames/15/18.jpg",
+                "./static/processed/frames/15/19.jpg",
+                "./static/processed/frames/15/20.jpg",
+                "./static/processed/frames/15/21.jpg",
+                "./static/processed/frames/15/22.jpg",
+                "./static/processed/frames/15/23.jpg",
+                "./static/processed/frames/15/25.jpg",
+                "./static/processed/frames/15/27.jpg",
+                "./static/processed/frames/15/28.jpg",
+                "./static/processed/frames/15/30.jpg",
+                "./static/processed/frames/15/32.jpg",
+                "./static/processed/frames/15/33.jpg",
+                "./static/processed/frames/15/45.jpg",
+                "./static/processed/frames/15/46.jpg"
+            ],
+            "videoId": 15,
+            "timeCode": 4.6,
+            "timeCodeMl": 1.5333333333333332,
+            "detectedClassId": 1
+        },
+        {
+            "fileName": [
+                "./static/processed/frames/15/26.jpg",
+                "./static/processed/frames/15/27.jpg",
+                "./static/processed/frames/15/29.jpg",
+                "./static/processed/frames/15/32.jpg",
+                "./static/processed/frames/15/33.jpg",
+                "./static/processed/frames/15/34.jpg",
+                "./static/processed/frames/15/35.jpg",
+                "./static/processed/frames/15/36.jpg",
+                "./static/processed/frames/15/39.jpg",
+                "./static/processed/frames/15/41.jpg",
+                "./static/processed/frames/15/42.jpg",
+                "./static/processed/frames/15/43.jpg",
+                "./static/processed/frames/15/44.jpg",
+                "./static/processed/frames/15/45.jpg"
+            ],
+            "videoId": 15,
+            "timeCode": 4.5,
+            "timeCodeMl": 1.5,
+            "detectedClassId": 1
+        }
+    ],
+    "humans": [],
+    "active": [],
+    "processedSource": "predict4"
+}

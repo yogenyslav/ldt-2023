@@ -37,7 +37,7 @@ function Dashboard() {
 
     return (
         <>
-            <Box
+            <Box className='root-box'
                 sx={{
                     backgroundImage: `url(${decoration_lineLINK})`,
                     backgroundColor: '#DFDFED',
@@ -48,7 +48,7 @@ function Dashboard() {
                     backgroundSize: '100vw',
                 }}
             >
-                <Container>
+                <Container className='main-container'>
                     <AppBar isAuthorized={true} isAdmin={isAdmin} />
                     <Box sx={{ mt: 3, mb: 3 }}>
                         {isAdmin && <NewConnection updateIsVideoSent={updateIsVideoSent}/>}

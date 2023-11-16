@@ -18,12 +18,16 @@ function ConnectionForm({ updateIsVideoSent }: { updateIsVideoSent: (newIsVideoS
     const [disableUploadButton, setDisableUploadButton] = useState(false);
 
     const [isVideoSent, setIsVideoSent] = useState<boolean>(false);
-
+    
     useEffect((() => {
         updateIsVideoSent(isVideoSent)
-    })
-        , [isVideoSent])
-
+    }), [isVideoSent])
+    
+    
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    useEffect((() => {
+        if(dotIcon) setIsLoading(false);
+    }), [dotIcon])
 
     const [groupId, setGroupId] = useState<number>(0);
     const updateGroupId = (newGroupId: number) => {
@@ -205,89 +209,91 @@ function ConnectionForm({ updateIsVideoSent }: { updateIsVideoSent: (newIsVideoS
 
     return (
         <>
-            <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Box display="flex" alignItems="center" justifyContent="center" flexDirection={'column'} sx={{ mt: 3 }}>
-                    <TextField multiline rows={6} onChange={handleMultipleLinksChange} error={error3} helperText={helperText3} disabled={textFieldDisabled}
-                        id="outlined-basic" label="Введите ссылки(каждая ссылка с новой строки)" variant="standard"
-                        sx={{ mt: 1, width: '400px', backgroundColor: '#DFDFED' }}
-                        color="secondary"
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <DownloadIcon sx={{ color: '#0B0959' }} />
-                                    <input
-                                        type="file"
-                                        id="fileInput"
-                                        style={{ display: 'none' }}
-                                        accept=".csv"
-                                        onChange={handleFileInputChange}
-                                        disabled={disableUploadButton}
-                                    />
-                                </InputAdornment>
-                            ),
-                        }} />
-                    <label htmlFor="fileInput">
-                        <Button sx={{ mt: 1, mb: 2 }}
-                            component="span"
-                            variant="outlined"
+            {!isLoading &&
+                <Box sx={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+                    <Box display="flex" alignItems="center" justifyContent="center" flexDirection={'column'} sx={{ mt: 3 }}>
+                        <TextField multiline rows={6} onChange={handleMultipleLinksChange} error={error3} helperText={helperText3} disabled={textFieldDisabled}
+                            id="outlined-basic" label="Введите ссылки(каждая ссылка с новой строки)" variant="standard"
+                            sx={{ mt: 1, width: '80%', backgroundColor: '#DFDFED' }}
                             color="secondary"
-                            startIcon={<CloudUploadIcon />}
-                            disabled={disableUploadButton}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <DownloadIcon sx={{ color: '#0B0959' }} />
+                                        <input
+                                            type="file"
+                                            id="fileInput"
+                                            style={{ display: 'none' }}
+                                            accept=".csv"
+                                            onChange={handleFileInputChange}
+                                            disabled={disableUploadButton}
+                                        />
+                                    </InputAdornment>
+                                ),
+                            }} />
+                        <label htmlFor="fileInput">
+                            <Button sx={{ mt: 1, mb: 2 }}
+                                component="span"
+                                variant="outlined"
+                                color="secondary"
+                                startIcon={<CloudUploadIcon />}
+                                disabled={disableUploadButton}
+                            >
+                                Загрузить файл
+                            </Button>
+                        </label>
+                        <Typography variant="body2" color="error">
+                            {errorText}
+                        </Typography>
+                        <Typography sx={{ mb: 2 }} variant="body2" color="textSecondary">
+                            Требуется файл типа .csv (один столбец с нужными ссылками)
+                        </Typography>
+                        {selectedFile && (
+                            <Paper elevation={3} sx={{ mb: 2, padding: '10px', display: 'flex', alignItems: 'center' }}>
+                                <InsertDriveFileIcon sx={{ fontSize: 20, marginRight: '10px', color: '#4094AC' }} />
+                                <Typography variant="body2">Выбранный файл: {selectedFile.name}</Typography>
+                                <IconButton onClick={() => {
+                                    setSelectedFile(null);
+                                    setTextFieldDisabled(false);
+                                    setErrorText('');
+                                }}>
+                                    <CloseIcon />
+                                </IconButton>
+                            </Paper>
+                        )}
+                    </Box>
+                    <Box sx={{ display: 'flex', minHeight: '260px', flexDirection: 'column', justifyContent: 'space-between', mt: '20px' }}>
+                        <Paper
+                            component="form"
+                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '250px', height: '40px', backgroundColor: '#DFDFED' }}
                         >
-                            Загрузить файл
-                        </Button>
-                    </label>
-                    <Typography variant="body2" color="error">
-                        {errorText}
-                    </Typography>
-                    <Typography sx={{ mb: 2 }} variant="body2" color="textSecondary">
-                        Требуется файл типа .csv (один столбец с нужными ссылками)
-                    </Typography>
-                    {selectedFile && (
-                        <Paper elevation={3} sx={{ mb: 2, padding: '10px', display: 'flex', alignItems: 'center' }}>
-                            <InsertDriveFileIcon sx={{ fontSize: 20, marginRight: '10px', color: '#4094AC' }} />
-                            <Typography variant="body2">Выбранный файл: {selectedFile.name}</Typography>
-                            <IconButton onClick={() => {
-                                setSelectedFile(null);
-                                setTextFieldDisabled(false);
-                                setErrorText('');
-                            }}>
-                                <CloseIcon />
-                            </IconButton>
+                            <img width="15px" height="15px" src={dotIcon} alt="logo" style={{ margin: '0 5px' }} />
+                            <Box>
+                                <InputBase
+                                    error={titleError}
+                                    value={titleValue}
+                                    onChange={handleTitelChange}
+                                    sx={{ ml: 1, flex: 1 }}
+                                    placeholder="Введите название"
+                                    inputProps={{ 'aria-label': 'stream title field' }}
+                                />
+                                {titleError &&
+                                    <>
+                                        <Divider sx={{ borderColor: 'error.main' }} />
+                                        <FormHelperText sx={{ color: 'error.main' }}>{titleHelperText}</FormHelperText>
+                                    </>
+                                }
+                            </Box>
                         </Paper>
-                    )}
+                        <SelectGroup updateGroupId={updateGroupId} />
+                        <Button onClick={handleSendVideo} disabled={disableButton}
+                            style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: '#CEE9DD', borderRadius: '8px', textTransform: 'capitalize', marginRight: 20, width: '250px', height: '40px' }}
+                        >
+                            Создать подключение
+                        </Button>
+                    </Box>
                 </Box>
-                <Box sx={{ display: 'flex', height: '260px', flexDirection: 'column', justifyContent: 'space-between', mt: '20px' }}>
-                    <Paper
-                        component="form"
-                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '250px', height: '40px', backgroundColor: '#DFDFED' }}
-                    >
-                        <img width="15px" height="15px" src={dotIcon} alt="logo" style={{ margin: '0 5px' }} />
-                        <Box>
-                            <InputBase
-                                error={titleError}
-                                value={titleValue}
-                                onChange={handleTitelChange}
-                                sx={{ ml: 1, flex: 1 }}
-                                placeholder="Введите название"
-                                inputProps={{ 'aria-label': 'stream title field' }}
-                            />
-                            {titleError &&
-                                <>
-                                    <Divider sx={{ borderColor: 'error.main' }} />
-                                    <FormHelperText sx={{ color: 'error.main' }}>{titleHelperText}</FormHelperText>
-                                </>
-                            }
-                        </Box>
-                    </Paper>
-                    <SelectGroup updateGroupId={updateGroupId} />
-                    <Button onClick={handleSendVideo} disabled={disableButton}
-                        style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: '#CEE9DD', borderRadius: '8px', textTransform: 'capitalize', marginRight: 20, width: '250px', height: '40px' }}
-                    >
-                        Создать подключение
-                    </Button>
-                </Box>
-            </Box>
+            }
         </>
     )
 };
