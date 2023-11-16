@@ -20,6 +20,7 @@ type CameraCreate struct {
 	Uuid    string `json:"uuid"`
 	Url     string `json:"url"`
 	GroupId int    `json:"groupId"`
+	Timeout int    `json:"timeout"`
 }
 
 type CameraGroupUpdate struct {

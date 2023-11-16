@@ -9,12 +9,12 @@ from ml import process, MlResult, base_path
 load_dotenv(".env")
 
 
-router = APIRouter(prefix="ml")
+router = APIRouter()
 
 
 class RequestData(BaseModel):
-    video_id: int
-    video_source: str
+    videoId: int
+    videoSource: str
     timeout: int = 0
 
 
@@ -27,7 +27,7 @@ class ResponseData(BaseModel):
 
 @router.post("/video")
 async def process_video(data: RequestData):
-    res = process(data.video_id, data.video_source)
+    res = process(data.videoId, data.videoSource)
 
     processed_source = os.listdir(f"{base_path}/static/processed/videos")
     processed_source.sort()
@@ -38,14 +38,14 @@ async def process_video(data: RequestData):
 
 @router.post("/stream")
 async def process_stream(data: RequestData):
-    process(data.video_id, data.video_source, data.timeout, rtsp=True)
+    process(data.videoId, data.videoSource, data.timeout, rtsp=True)
 
 
 @router.post("/frames")
 async def process_frames(data: RequestData):
-    cap = cv2.VideoCapture(f"{base_path}/{data.video_source}")
+    cap = cv2.VideoCapture(f"{base_path}/{data.videoSource}")
     try:
-        os.mkdir(f"{base_path}/static/frames/{data.video_id}")
+        os.mkdir(f"{base_path}/static/frames/{data.videoId}")
     except Exception as e:
         print(str(e))
 
@@ -58,7 +58,7 @@ async def process_frames(data: RequestData):
 
         if frame % (fps * 5) == 0:
             cv2.imwrite(
-                f"{base_path}/static/frames/{data.video_id}/frame{count}.jpg", image
+                f"{base_path}/static/frames/{data.videoId}/frame{count}.jpg", image
             )
             print(f"frame{count}")
             count += 1

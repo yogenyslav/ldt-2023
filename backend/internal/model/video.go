@@ -29,7 +29,7 @@ type VideoCreate struct {
 	GroupId int    `json:"groupId"`
 }
 
-type VideoUpdateGroup struct {
+type VideoGroupUpdate struct {
 	Action  string `json:"action" validate:"required,oneof=add remove"`
 	VideoId int    `json:"videoId" validate:"required,gte=1"`
 	GroupId int    `json:"groupId" validate:"gte=0"`

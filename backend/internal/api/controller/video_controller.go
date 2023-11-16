@@ -312,7 +312,7 @@ func (vc *videoController) GetOneById(c *fiber.Ctx) error {
 //	@Failure		422				{object}	string					"Неверный формат данных"
 //	@Router			/api/v1/videos/updateGroup [post]
 func (vc *videoController) UpdateGroup(c *fiber.Ctx) error {
-	var updateData model.VideoUpdateGroup
+	var updateData model.VideoGroupUpdate
 	if err := json.Unmarshal(c.Body(), &updateData); err != nil {
 		return response.ErrValidationError(vc.modelName, err)
 	}

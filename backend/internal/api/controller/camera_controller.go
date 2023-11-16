@@ -59,7 +59,7 @@ func (cc *cameraController) CreateOne(c *fiber.Ctx) error {
 		return response.ErrGetRecordsFailed(cc.modelName, err)
 	}
 
-	go service.ProcessStream(cameraId, cameraData.Url)
+	go service.ProcessStream(cameraId, cameraData.Url, cameraData.Timeout)
 
 	return c.SendStatus(http.StatusCreated)
 }
@@ -92,7 +92,7 @@ func (cc *cameraController) CreateMany(c *fiber.Ctx) error {
 	}
 
 	for idx, cameraData := range camerasData {
-		go service.ProcessStream(cameraIds[idx], cameraData.Url)
+		go service.ProcessStream(cameraIds[idx], cameraData.Url, cameraData.Timeout)
 	}
 
 	return c.SendStatus(http.StatusCreated)
