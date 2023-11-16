@@ -1,0 +1,13 @@
+# celery~=5.3.4
+# redis~=5.0.1
+# eventlet~=0.33.3
+opencv-python~=4.8.1.78
+ultralytics~=8.0.207
+lapx~=0.5.5
+Cython~=3.0.5
+pydantic~=2.4.1
+fastapi~=0.104.1
+uvicorn
+scikit-learn
+python-dotenv
+numpy
