@@ -10,7 +10,6 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { BASE_URL } from '../config';
 import storage from '../utils/storage';
 
-
 interface Props {
     source: string;
 }
@@ -35,6 +34,12 @@ export default function FrameCameraCard(props: Props) {
                 title="detected object"
             >
                 <img src={`${BASE_URL}/${source}?token=${storage.getToken()}`} alt={`detected object`} style={{width: '400px'}}/>
+                {/* <ImageHeader 
+                src={`${BASE_URL}/${source}?token=${storage.getToken()}`}
+                alt={`detected object`}
+                headers={{ 'ngrok-skip-browser-warning': 'lets go'}} 
+                style={{width: '400px'}}
+                /> */}
                 <Fab color="secondary" aria-label="open" onClick={handleClickOpen} style={{ position: 'absolute', right: 10, top: 10 }}>
                     <ZoomOutMapIcon />
                 </Fab>
@@ -76,6 +81,12 @@ export default function FrameCameraCard(props: Props) {
             >
                 <DialogContent>
                     <img src={`${BASE_URL}/${source}?token=${storage.getToken()}`} alt={`detected object`} style={{width: '100%'}}/>
+                    {/* <ImageHeader 
+                    src={`${BASE_URL}/${source}?token=${storage.getToken()}`}
+                    alt={`detected object`}
+                    headers={{ 'ngrok-skip-browser-warning': 'lets go'}} 
+                    style={{width: '100%'}}
+                    /> */}
                     <Fab color="secondary" aria-label="close" onClick={handleClose} style={{ position: 'absolute', right: 10, top: 10 }}>
                         <CloseIcon />
                     </Fab>

@@ -1124,7 +1124,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.VideoUpdateGroup"
+                            "$ref": "#/definitions/model.VideoGroupUpdate"
                         }
                     }
                 ],
@@ -1420,6 +1420,9 @@
                 "groupId": {
                     "type": "integer"
                 },
+                "timeout": {
+                    "type": "integer"
+                },
                 "url": {
                     "type": "string"
                 },
@@ -1646,7 +1649,7 @@
                 }
             }
         },
-        "model.VideoUpdateGroup": {
+        "model.VideoGroupUpdate": {
             "type": "object",
             "required": [
                 "action",

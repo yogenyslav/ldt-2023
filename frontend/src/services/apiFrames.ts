@@ -41,10 +41,10 @@ const ApiFrames = {
         formData.append('videoId', videoId);
         formData.append('frame', dataURLtoFile(frame, 'frame'));
         return await axios
-            .post(`${BASE_URL}/api/v1/frames/learn`, formData, config)
+            .post(`${BASE_URL}/v1/frames/learn`, formData, config)
     },
     async putRejectFrames(frameId: number) {
-        return await axios.put(`${BASE_URL}/api/v1/frames/ml/reject/${frameId}`, config);
+        return await axios.put(`${BASE_URL}/v1/frames/ml/reject/${frameId}`, config);
     },
 };
 export default ApiFrames;

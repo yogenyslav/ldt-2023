@@ -30,14 +30,24 @@ class ResponseData(BaseModel):
     processedSource: str
 
 
+def directory_key(path: str):
+    if path == "predict":
+        return 0
+    else:
+        return int(path.replace(path, "predict", ""))
+
+
 @app.post("/video")
 async def process_video(data: RequestData):
+    search_dir = f"{base_path}/static/processed/videos"
+    dirs = set(os.listdir(search_dir))
     res = process(data.videoId, data.videoSource)
+    new_dirs = set(os.listdir(search_dir))
+    print(new_dirs.difference(dirs))
+    processed_source = list(new_dirs.difference(dirs))[0]
 
-    processed_source = os.listdir(f"{base_path}/static/processed/videos")
-    processed_source.sort()
     response = ResponseData(
-        cadrs=res[0], humans=res[1], active=res[2], processedSource=processed_source[-1]
+        cadrs=res[0], humans=res[1], active=res[2], processedSource=processed_source
     ).model_dump_json()
     print(response)
     return response
@@ -45,7 +55,7 @@ async def process_video(data: RequestData):
 
 @app.post("/stream")
 async def process_stream(data: RequestData):
-    process(data.videoId, data.videoSource, data.timeout, rtsp=True)
+    process(data.videoId, data.videoSource, 45, rtsp=True)
 
 
 @app.post("/frames")

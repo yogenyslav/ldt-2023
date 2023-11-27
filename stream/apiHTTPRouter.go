@@ -47,67 +47,67 @@ func HTTPAPIServer() {
 	if Storage.ServerHTTPDemo() {
 		public.LoadHTMLGlob(Storage.ServerHTTPDir() + "/templates/*")
 		// public.GET("/", HTTPAPIServerIndex)
-		public.GET("/pages/stream/list", HTTPAPIStreamList)
-		public.GET("/pages/stream/add", HTTPAPIAddStream)
-		public.GET("/pages/stream/edit/:uuid", HTTPAPIEditStream)
-		public.GET("/pages/player/hls/:uuid/:channel", HTTPAPIPlayHls)
-		public.GET("/pages/player/mse/:uuid/:channel", HTTPAPIPlayMse)
-		public.GET("/pages/player/webrtc/:uuid/:channel", HTTPAPIPlayWebrtc)
-		public.GET("/pages/multiview", HTTPAPIMultiview)
-		public.Any("/pages/multiview/full", HTTPAPIFullScreenMultiView)
-		public.GET("/pages/documentation", HTTPAPIServerDocumentation)
-		public.GET("/pages/player/all/:uuid/:channel", HTTPAPIPlayAll)
-		public.StaticFS("/static", http.Dir(Storage.ServerHTTPDir()+"/static"))
+		public.GET("/hls/pages/stream/list", HTTPAPIStreamList)
+		public.GET("/hls/pages/stream/add", HTTPAPIAddStream)
+		public.GET("/hls/pages/stream/edit/:uuid", HTTPAPIEditStream)
+		public.GET("/hls/pages/player/hls/:uuid/:channel", HTTPAPIPlayHls)
+		public.GET("/hls/pages/player/mse/:uuid/:channel", HTTPAPIPlayMse)
+		public.GET("/hls/pages/player/webrtc/:uuid/:channel", HTTPAPIPlayWebrtc)
+		public.GET("/hls/pages/multiview", HTTPAPIMultiview)
+		public.Any("/hls/pages/multiview/full", HTTPAPIFullScreenMultiView)
+		public.GET("/hls/pages/documentation", HTTPAPIServerDocumentation)
+		public.GET("/hls/pages/player/all/:uuid/:channel", HTTPAPIPlayAll)
+		public.StaticFS("/hls/static", http.Dir(Storage.ServerHTTPDir()+"/static"))
 	}
 
 	/*
 		Stream Control elements
 	*/
 
-	privat.GET("/streams", HTTPAPIServerStreams)
-	privat.POST("/stream/:uuid/add", HTTPAPIServerStreamAdd)
-	privat.POST("/stream/:uuid/edit", HTTPAPIServerStreamEdit)
-	privat.GET("/stream/:uuid/delete", HTTPAPIServerStreamDelete)
-	privat.GET("/stream/:uuid/reload", HTTPAPIServerStreamReload)
-	privat.GET("/stream/:uuid/info", HTTPAPIServerStreamInfo)
+	privat.GET("/hls/streams", HTTPAPIServerStreams)
+	privat.POST("/hls/stream/:uuid/add", HTTPAPIServerStreamAdd)
+	privat.POST("/hls/stream/:uuid/edit", HTTPAPIServerStreamEdit)
+	privat.GET("/hls/stream/:uuid/delete", HTTPAPIServerStreamDelete)
+	privat.GET("/hls/stream/:uuid/reload", HTTPAPIServerStreamReload)
+	privat.GET("/hls/stream/:uuid/info", HTTPAPIServerStreamInfo)
 
 	/*
 		Streams Multi Control elements
 	*/
 
-	privat.POST("/streams/multi/control/add", HTTPAPIServerStreamsMultiControlAdd)
-	privat.POST("/streams/multi/control/delete", HTTPAPIServerStreamsMultiControlDelete)
+	privat.POST("/hls/streams/multi/control/add", HTTPAPIServerStreamsMultiControlAdd)
+	privat.POST("/hls/streams/multi/control/delete", HTTPAPIServerStreamsMultiControlDelete)
 
 	/*
 		Stream Channel elements
 	*/
 
-	privat.POST("/stream/:uuid/channel/:channel/add", HTTPAPIServerStreamChannelAdd)
-	privat.POST("/stream/:uuid/channel/:channel/edit", HTTPAPIServerStreamChannelEdit)
-	privat.GET("/stream/:uuid/channel/:channel/delete", HTTPAPIServerStreamChannelDelete)
-	privat.GET("/stream/:uuid/channel/:channel/codec", HTTPAPIServerStreamChannelCodec)
-	privat.GET("/stream/:uuid/channel/:channel/reload", HTTPAPIServerStreamChannelReload)
-	privat.GET("/stream/:uuid/channel/:channel/info", HTTPAPIServerStreamChannelInfo)
+	privat.POST("/hls/stream/:uuid/channel/:channel/add", HTTPAPIServerStreamChannelAdd)
+	privat.POST("/hls/stream/:uuid/channel/:channel/edit", HTTPAPIServerStreamChannelEdit)
+	privat.GET("/hls/stream/:uuid/channel/:channel/delete", HTTPAPIServerStreamChannelDelete)
+	privat.GET("/hls/stream/:uuid/channel/:channel/codec", HTTPAPIServerStreamChannelCodec)
+	privat.GET("/hls/stream/:uuid/channel/:channel/reload", HTTPAPIServerStreamChannelReload)
+	privat.GET("/hls/stream/:uuid/channel/:channel/info", HTTPAPIServerStreamChannelInfo)
 
 	/*
 		Stream video elements
 	*/
 	//HLS
-	public.GET("/stream/:uuid/channel/:channel/hls/live/index.m3u8", HTTPAPIServerStreamHLSM3U8)
-	public.GET("/stream/:uuid/channel/:channel/hls/live/segment/:seq/file.ts", HTTPAPIServerStreamHLSTS)
+	public.GET("/hls/stream/:uuid/channel/:channel/hls/live/index.m3u8", HTTPAPIServerStreamHLSM3U8)
+	public.GET("/hls/stream/:uuid/channel/:channel/hls/live/segment/:seq/file.ts", HTTPAPIServerStreamHLSTS)
 	//HLS remote record
-	//public.GET("/stream/:uuid/channel/:channel/hls/rr/:s/:e/index.m3u8", HTTPAPIServerStreamRRM3U8)
-	//public.GET("/stream/:uuid/channel/:channel/hls/rr/:s/:e/:seq/file.ts", HTTPAPIServerStreamRRTS)
+	//public.GET("/hls/:uuid/channel/:channel/hls/rr/:s/:e/index.m3u8", HTTPAPIServerStreamRRM3U8)
+	//public.GET("/hls/:uuid/channel/:channel/hls/rr/:s/:e/:seq/file.ts", HTTPAPIServerStreamRRTS)
 	//HLS LL
-	public.GET("/stream/:uuid/channel/:channel/hlsll/live/index.m3u8", HTTPAPIServerStreamHLSLLM3U8)
-	public.GET("/stream/:uuid/channel/:channel/hlsll/live/init.mp4", HTTPAPIServerStreamHLSLLInit)
-	public.GET("/stream/:uuid/channel/:channel/hlsll/live/segment/:segment/:any", HTTPAPIServerStreamHLSLLM4Segment)
-	public.GET("/stream/:uuid/channel/:channel/hlsll/live/fragment/:segment/:fragment/:any", HTTPAPIServerStreamHLSLLM4Fragment)
+	public.GET("/hls/stream/:uuid/channel/:channel/hlsll/live/index.m3u8", HTTPAPIServerStreamHLSLLM3U8)
+	public.GET("/hls/stream/:uuid/channel/:channel/hlsll/live/init.mp4", HTTPAPIServerStreamHLSLLInit)
+	public.GET("/hls/stream/:uuid/channel/:channel/hlsll/live/segment/:segment/:any", HTTPAPIServerStreamHLSLLM4Segment)
+	public.GET("/hls/stream/:uuid/channel/:channel/hlsll/live/fragment/:segment/:fragment/:any", HTTPAPIServerStreamHLSLLM4Fragment)
 	//MSE
-	public.GET("/stream/:uuid/channel/:channel/mse", HTTPAPIServerStreamMSE)
-	public.POST("/stream/:uuid/channel/:channel/webrtc", HTTPAPIServerStreamWebRTC)
+	public.GET("/hls/stream/:uuid/channel/:channel/mse", HTTPAPIServerStreamMSE)
+	public.POST("/hls/stream/:uuid/channel/:channel/webrtc", HTTPAPIServerStreamWebRTC)
 	//Save fragment to mp4
-	public.GET("/stream/:uuid/channel/:channel/save/mp4/fragment/:duration", HTTPAPIServerStreamSaveToMP4)
+	public.GET("/hls/stream/:uuid/channel/:channel/save/mp4/fragment/:duration", HTTPAPIServerStreamSaveToMP4)
 	/*
 		HTTPS Mode Cert
 		# Key considerations for algorithm "RSA" ≥ 2048-bit

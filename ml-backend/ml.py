@@ -29,7 +29,7 @@ class MlResult(BaseModel):
     detectedClassId: int
 
 
-def process(video_id: int, video_path: str, timeout: int = 0, rtsp: bool = False):
+def process(video_id: int, video_path: str, timeout: int = 30, rtsp: bool = False):
     model = YOLO("weights/model.pt")
     model_predictor = RTDETR("weights/model_predictor.pt")
     model_cart = YOLO("weights/yolov8n.pt")

@@ -36,6 +36,8 @@ definitions:
     properties:
       groupId:
         type: integer
+      timeout:
+        type: integer
       url:
         type: string
       uuid:
@@ -192,7 +194,7 @@ definitions:
       title:
         type: string
     type: object
-  model.VideoUpdateGroup:
+  model.VideoGroupUpdate:
     properties:
       action:
         enum:
@@ -1081,7 +1083,7 @@ paths:
         name: updateData
         required: true
         schema:
-          $ref: '#/definitions/model.VideoUpdateGroup'
+          $ref: '#/definitions/model.VideoGroupUpdate'
       produces:
       - application/json
       responses:

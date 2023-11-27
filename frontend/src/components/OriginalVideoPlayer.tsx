@@ -90,6 +90,9 @@ function VideoPlayer(props: Props) {
                     }}>
                         <Box className="video">
                             <video style={{ maxWidth: '700px', maxHeight: '400px' }} ref={videoRef} src={videoLink} controls></video>
+                            {/* <VideoHeader controls style={{  maxHeight: '400px', width: '100%' }} ref={videoRef} src={videoLink}
+                             headers={{ 'ngrok-skip-browser-warning': 'lets go'}} 
+                            /> */}
                         </Box>
 
                         <Paper sx={{backgroundColor: '#DFDFED', border: '1px solid white', borderRadius: '15px',}}>
@@ -118,7 +121,15 @@ function VideoPlayer(props: Props) {
                                             }}>
                                             <ListItemButton>
                                                 <ListItemIcon>
-                                                    <img src={`${BASE_URL}/${image}?token=${storage.getToken()}`} alt="thumbnails" className={`width-100 ${image === selectedThumbnail ? "active-thumbnail" : ""}`} style={{ maxWidth: 200 }} />
+                                                    <img src={`${BASE_URL}/${image}?token=${storage.getToken()}`} 
+                                                    alt="thumbnails" className={`width-100 ${image === selectedThumbnail ? "active-thumbnail" : ""}`} 
+                                                    style={{ maxWidth: 200 }} />
+                                                     {/* <ImageHeader 
+                                                    src={`${BASE_URL}/${image}?token=${storage.getToken()}`} 
+                                                    alt="thumbnails" className={`width-100 ${image === selectedThumbnail ? "active-thumbnail" : ""}`} 
+                                                    style={{ maxWidth: 200 }}
+                                                    headers={{ 'ngrok-skip-browser-warning': 'lets go'}} 
+                                                    /> */}
                                                 </ListItemIcon>
                                                 <ListItemText sx={{ ml: 2 }} primary={`${timecode}`} />
                                             </ListItemButton>

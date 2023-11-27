@@ -34,7 +34,7 @@ def process_cadr(
             if check_cart(model_cart, image_path) == False:
                 continue
         # if (obj[-2] + start_conf) / 2 > 0.6 or obj[-2] > 0.77:
-        if (obj[-2] + start_conf) / 2 > 0.5 and start_conf > 0.15:
+        if (obj[-2] + start_conf) / 2 > 0.5 and start_conf > 0.12:
             coords.append(obj[:4])
     return coords
 

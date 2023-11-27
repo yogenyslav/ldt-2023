@@ -42,6 +42,15 @@ function ConnectionForm({ updateIsVideoSent }: { updateIsVideoSent: (newIsVideoS
         setTitleValue(event.target.value)
     }
 
+    const [timeValue, setTimeValue] = useState<string>('');
+    const [timeError, setTimeError] = useState<boolean>(false);
+    const [timeHelperText, setTimeHelperText] = useState<string>('');
+
+    function handleTimeChange(event: any) {
+        setIsVideoSent(false);
+        setTimeValue(event.target.value)
+    }
+
     const handleMultipleLinksChange = (event: any) => {
         setIsVideoSent(false);
         const inputText = event.target.value;
@@ -81,6 +90,7 @@ function ConnectionForm({ updateIsVideoSent }: { updateIsVideoSent: (newIsVideoS
     const handleSendVideo = (event: any) => {
         setIsVideoSent(false);
         let errorEmpty = false;
+        let errorEmptyTime = false;
         event.preventDefault();
 
         if (!titleValue) {
@@ -94,7 +104,18 @@ function ConnectionForm({ updateIsVideoSent }: { updateIsVideoSent: (newIsVideoS
             errorEmpty = false;
         }
 
-        if (!errorEmpty && linkArr) {
+        if (!timeValue) {
+            setTimeError(true);
+            setTimeHelperText('Введите время(сек) через которое прекратиь обрабатывать видео с камеры')
+            errorEmptyTime = true;
+        }
+        else {
+            setTimeError(false);
+            setTimeHelperText('')
+            errorEmptyTime = false;
+        }
+
+        if (!errorEmpty && linkArr && !errorEmptyTime) {
             let Urls = [];
             if (selectedFile) Urls = uploadedFiles;
             else Urls = linkArr;
@@ -128,6 +149,7 @@ function ConnectionForm({ updateIsVideoSent }: { updateIsVideoSent: (newIsVideoS
                     groupId: groupId,
                     uuid: uuid,
                     url: Urls[i],
+                    timeout: parseInt(timeValue),
                 })
 
             }
@@ -286,6 +308,28 @@ function ConnectionForm({ updateIsVideoSent }: { updateIsVideoSent: (newIsVideoS
                             </Box>
                         </Paper>
                         <SelectGroup updateGroupId={updateGroupId} />
+                        <Paper
+                            component="form"
+                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '250px', height: '40px', backgroundColor: '#DFDFED' }}
+                        >
+                            <img width="15px" height="15px" src={dotIcon} alt="logo" style={{ margin: '0 5px' }} />
+                            <Box>
+                                <InputBase
+                                    error={timeError}
+                                    value={timeValue}
+                                    onChange={handleTimeChange}
+                                    sx={{ ml: 1, flex: 1 }}
+                                    placeholder="Время обработки. 0 - всегда"
+                                    inputProps={{ 'aria-label': 'stream timeout field' }}
+                                />
+                                {timeError &&
+                                    <>
+                                        <Divider sx={{ borderColor: 'error.main' }} />
+                                        <FormHelperText sx={{ color: 'error.main' }}>{timeHelperText}</FormHelperText>
+                                    </>
+                                }
+                            </Box>
+                        </Paper>
                         <Button onClick={handleSendVideo} disabled={disableButton}
                             style={{ color: '#0B0959', fontFamily: 'Nunito Sans', backgroundColor: '#CEE9DD', borderRadius: '8px', textTransform: 'capitalize', marginRight: 20, width: '250px', height: '40px' }}
                         >

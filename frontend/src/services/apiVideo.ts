@@ -34,19 +34,19 @@ interface getVideoFrames {
 const ApiVideo = {
 
     async getAllVideos(data: GetAllVideosData) {
-        return await axios.get(`${BASE_URL}/api/v1/videos?offset=${data.offset}&limit=${data.limit}`, config);
+        return await axios.get(`${BASE_URL}/v1/videos?offset=${data.offset}&limit=${data.limit}`, config);
     },
     async getAllVideosFilter(data: GetAllVideosDataFilter) {
-        return await axios.get(`${BASE_URL}/api/v1/videos?filter=groupId&value=${data.groupId}&offset=${data.offset}&limit=${data.limit}`, config);
+        return await axios.get(`${BASE_URL}/v1/videos?filter=groupId&value=${data.groupId}&offset=${data.offset}&limit=${data.limit}`, config);
     },
     async getVideoData(videoId: string) {
-        return await axios.get(`${BASE_URL}/api/v1/videos/${videoId}`, config);
+        return await axios.get(`${BASE_URL}/v1/videos/${videoId}`, config);
     },
     async getVideoFrames(data: getVideoFrames) {
-        return await axios.get(`${BASE_URL}/api/v1/videos/${data.videoId}/frames/?type=${data.type}`, config);
+        return await axios.get(`${BASE_URL}/v1/videos/${data.videoId}/frames/?type=${data.type}`, config);
     },
     async getVideoMlFrames(videoId: string) {
-        return await axios.get(`${BASE_URL}/api/v1/frames/ml/${videoId}`, config);
+        return await axios.get(`${BASE_URL}/v1/frames/ml/${videoId}`, config);
     },
     async createOneVideo(data: CreateVideoData) {
         const formData = new FormData();
@@ -54,7 +54,7 @@ const ApiVideo = {
         formData.append('title', data.title); 
         formData.append('groupId', data.groupId.toString());
     
-        return await axios.post(`${BASE_URL}/api/v1/videos`, formData, config);
+        return await axios.post(`${BASE_URL}/v1/videos`, formData, config);
     },
     async createVideosAll(data: CreateVideoData) {
         
@@ -64,14 +64,14 @@ const ApiVideo = {
         formData.append('title', data.title); 
         formData.append('groupId', data.groupId.toString());
     
-        return await axios.post(`${BASE_URL}/api/v1/videos/many`, formData, config);
+        return await axios.post(`${BASE_URL}/v1/videos/many`, formData, config);
     },
     async updateVideoGroup(data: updateVideoGroupdata) {
 
-        return await axios.post(`${BASE_URL}/api/v1/videos/updateGroup`, data,config);
+        return await axios.post(`${BASE_URL}/v1/videos/updateGroup`, data,config);
     },
     async deleteVideo(videoId: number) {
-        return await axios.delete(`${BASE_URL}/api/v1/videos/${videoId}`, config);
+        return await axios.delete(`${BASE_URL}/v1/videos/${videoId}`, config);
     },
 };
 export default ApiVideo;

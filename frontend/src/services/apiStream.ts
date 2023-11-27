@@ -15,25 +15,19 @@ interface CreateStreamData {
     };
 }
 
-const config = {
-    headers: {
-        "ngrok-skip-browser-warning": 'lets go'
-    }
-  }
-
 const ApiStream = {
 
     async createStream(data: CreateStreamData, uuid: string) {
-        return await axios.post(`${STREAM_URL}/stream/${uuid}/add`, data, config);
+        return await axios.post(`${STREAM_URL}/stream/${uuid}/add`, data);
     },
     async getAllStreams() {
-        return await axios.get(`${STREAM_URL}/streams`, config);
+        return await axios.get(`${STREAM_URL}/streams`);
     },
     async getStreamInfo(stream_id: string) {
-        return await axios.get(`${STREAM_URL}/stream/${stream_id}/info`, config);
+        return await axios.get(`${STREAM_URL}/stream/${stream_id}/info`);
     },
     async deleteStream(stream_id: string) {
-        return await axios.get(`${STREAM_URL}/stream/${stream_id}/delete`, config);
+        return await axios.get(`${STREAM_URL}/stream/${stream_id}/delete`);
     },
 };
 export default ApiStream;

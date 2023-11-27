@@ -328,7 +328,7 @@ function Users() {
                                     <ListTable data={fetchedUsers || []} />
                                 </Paper>
                             </Box>
-                            <Box sx={{ mt: 3, mb: 3, display: 'flex', justifyContent: 'space-around' }}>
+                            <Box sx={{ mt: 3, mb: 3, display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
                                 <Box sx={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'column' }}>
                                     <Paper sx={{ marginTop: 3, borderRadius: '15px', display: 'flex', justifyContent: 'space-between', flexDirection: 'column', height: '200px', p: 2 }}>
                                         <Typography

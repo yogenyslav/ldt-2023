@@ -39,16 +39,16 @@ func (r *Router) setup() error {
 	}))
 	r.engine.Use(logger.New(logger.ConfigDefault))
 	r.engine.Use(recover.New(recover.ConfigDefault))
-	r.engine.Get("/swagger/*", swagger.HandlerDefault)
+	r.engine.Get("/api/swagger/*", swagger.HandlerDefault)
 
-	r.engine.Static("/static", "./static")
-	r.engine.Use("/static", middleware.StaticTokenMiddleware(config.Cfg.JwtSecret))
+	r.engine.Static("/api/static", "./static")
+	r.engine.Use("/api/static", middleware.StaticTokenMiddleware(config.Cfg.JwtSecret))
 
-	auth := r.engine.Group("/auth")
+	auth := r.engine.Group("/api/auth")
 	if err := r.setupAuthRoutes(auth); err != nil {
 		return err
 	}
-
+	
 	v1 := r.engine.Group("/api/v1")
 	v1.Use(middleware.AccessTokenMiddleware(config.Cfg.JwtSecret))
 	if err := r.setupUserRoutes(v1); err != nil {

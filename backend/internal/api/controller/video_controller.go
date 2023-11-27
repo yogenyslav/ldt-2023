@@ -305,7 +305,7 @@ func (vc *videoController) GetOneById(c *fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			Authorization	header		string					true	"Authentication header"
-//	@Param			updateData		body		model.VideoUpdateGroup	true	"Данные для обновления"
+//	@Param			updateData		body		model.VideoGroupUpdate	true	"Данные для обновления"
 //	@Success		204				{object}	string					"Видео успешно обновлено"
 //	@Failure		400				{object}	string					"Ошибка при обновлении видео"
 //	@Failure		403				{object}	string					"Доступ запрещен"

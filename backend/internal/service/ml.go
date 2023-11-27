@@ -9,7 +9,6 @@ import (
 	"lct/internal/logging"
 	"lct/internal/model"
 	"net/http"
-	"os"
 	"os/exec"
 	"strings"
 )
@@ -114,17 +113,22 @@ func ProcessVideoMl(videoId int, videoSource, fileName string, videoRepo model.V
 	resp.ProcessedSource = strings.ReplaceAll(resp.ProcessedSource, " ", "_")
 
 	path := "static/processed/videos/" + resp.ProcessedSource
-	fileNameAvi := strings.Replace(fileName, ".mp4", ".avi", 1)
-	fileNameAvi = strings.Replace(fileName, ".MP4", ".avi", 1)
-	if _, err := os.Stat(path + "/" + fileNameAvi); os.IsNotExist(err) {
-		logging.Log.Debugf("file %s does not exist", path+"/"+fileNameAvi)
-	} else {
-		// ffmpeg -i file.avi -c:v libx264 -pix_fmt yuv420p file.mp4
-		cmd := exec.Command("ffmpeg", "-i", path+"/"+fileNameAvi, "-c:v", "libx264", "-pix_fmt", "yuv420p", path+"/"+fileName)
-		if err := cmd.Run(); err != nil {
-			logging.Log.Errorf("failed to convert video to mp4: %s", err)
-			return
-		}
+	logging.Log.Debugf("filename: '%s'", fileName)
+	splitted := strings.Split(fileName, ".mp4")
+	fileNoExt := splitted[0]
+	fileNameAvi := strings.ReplaceAll(fileName, ".mp4", ".avi")
+	logging.Log.Debugf("AVI: %s", fileNameAvi)
+	// if _, err := os.Stat(path + "/" + fileNameAvi); os.IsNotExist(err) {
+	// 	logging.Log.Debugf("file %s does not exist", path+"/"+fileNameAvi)
+	// } else {
+	// 	// ffmpeg -i file.avi -c:v libx264 -pix_fmt yuv420p file.mp4
+
+	// }
+
+	cmd := exec.Command("ffmpeg", "-i", path+"/"+fileNoExt+".avi", "-c:v", "libx264", "-pix_fmt", "yuv420p", path+"/"+fileName)
+	if err := cmd.Run(); err != nil {
+		logging.Log.Errorf("failed to convert video to mp4: %s", err)
+		return
 	}
 
 	if err := videoRepo.SetCompleted(c, videoId, path+"/"+fileName); err != nil {

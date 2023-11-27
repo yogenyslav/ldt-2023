@@ -6,6 +6,7 @@ interface CreateCameraData {
     groupId: number;
     url: string;
     uuid: string;
+    timeout: number;
 }
 
 interface updateStreamGroupdata {
@@ -17,20 +18,20 @@ interface updateStreamGroupdata {
 const ApiCamera = {
 
     async getCameraData(streamId: string) {
-        return await axios.get(`${BASE_URL}/api/v1/cameras/${streamId}`, config);
+        return await axios.get(`${BASE_URL}/v1/cameras/${streamId}`, config);
     },
     async getCameraMlFrames(streamId: string) {
-        return await axios.get(`${BASE_URL}/api/v1/cameras/${streamId}/frames`, config);
+        return await axios.get(`${BASE_URL}/v1/cameras/${streamId}/frames`, config);
     },
     async createCamera(data: CreateCameraData) {    
-        return await axios.post(`${BASE_URL}/api/v1/cameras`, data, config);
+        return await axios.post(`${BASE_URL}/v1/cameras`, data, config);
     },
     async updateCameraGroup(data: updateStreamGroupdata) {
 
-        return await axios.post(`${BASE_URL}/api/v1/cameras/updateGroup`, data,config);
+        return await axios.post(`${BASE_URL}/v1/cameras/updateGroup`, data,config);
     },
     async deleteCamera(streamId: string) {
-        return await axios.delete(`${BASE_URL}/api/v1/cameras/${streamId}`, config);
+        return await axios.delete(`${BASE_URL}/v1/cameras/${streamId}`, config);
     },
 };
 export default ApiCamera;

@@ -157,6 +157,9 @@ function VideoPlayer(props: Props) {
                                     Текущее видео: {videoTitle}
                                 </Typography>}
                             <video controls style={{  maxHeight: '400px', width: '100%' }} ref={videoMlRef} src={videoMlLink}></video>
+                            {/* <VideoHeader controls style={{  maxHeight: '400px', width: '100%' }} ref={videoMlRef} src={videoMlLink}
+                             headers={{ 'ngrok-skip-browser-warning': 'lets go'}} 
+                            /> */}
                         </Box>
 
                         {isAdmin &&

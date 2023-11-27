@@ -25,16 +25,16 @@ const ApiUser = {
 
     async createUser(data: CreateUserData) {
         return await axios
-            .post(`${BASE_URL}/api/v1/users`, data , config);
+            .post(`${BASE_URL}/v1/users`, data , config);
     },
     async getAllUsers(data: GetAllUsersData) {
-        return await axios.get(`${BASE_URL}/api/v1/users?offset=${data.offset}&limit=${data.limit}`, config);
+        return await axios.get(`${BASE_URL}/v1/users?offset=${data.offset}&limit=${data.limit}`, config);
     },
     async updateUserGroup(data: updateUserGroupdata) {
-        return await axios.post(`${BASE_URL}/api/v1/users/updateGroup`, data,config);
+        return await axios.post(`${BASE_URL}/v1/users/updateGroup`, data,config);
     },
     async deleteUser(userId: number) {
-        return await axios.delete(`${BASE_URL}/api/v1/users/${userId}`, config);
+        return await axios.delete(`${BASE_URL}/v1/users/${userId}`, config);
     },
 };
 export default ApiUser;

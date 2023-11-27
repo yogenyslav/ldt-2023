@@ -12,6 +12,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { BASE_URL } from '../config';
 import storage from '../utils/storage';
 import ApiFrames from '../services/apiFrames';
+import { useMediaQuery } from '@mui/material';
 
 interface Props {
     sources: string[];
@@ -73,17 +74,25 @@ export default function FrameCard(props: Props) {
         setOpenRejectDialog(false);
     }
 
+    const isMobile = useMediaQuery('(max-width:1100px)');
+    const isTablet = useMediaQuery('(min-width:600px) and (max-width:1200px)');
+
     return (
         <>
-            <Card sx={{ maxWidth: '910px', boxShadow: '0px 0px 10px 5px rgba(0,0,0,0.1)', borderRadius: '15px', mt: 2, mb: 10, ml: 'auto', mr: 'auto', display: 'flex' }} >
+            <Card sx={{ maxWidth: isTablet ? '50%' : isMobile ? '100%' : '910px', boxShadow: '0px 0px 10px 5px rgba(0,0,0,0.1)', borderRadius: '15px', mt: 2, mb: 10, ml: 'auto', mr: 'auto', display: 'flex', flexDirection: isMobile ? 'column' : 'row' }} >
                 <CardMedia
-                    sx={{ width: '50%', aspectRatio: '16/9', position: 'relative' }}
+                    sx={{ width: '100%', aspectRatio: isMobile ? '4/3' : '16/9', position: 'relative' }}
                     title="detected object"
                 >
                     <Carousel showThumbs={false}>
                         {sources.map((source, index) => (
                             <div key={index}>
                                 <img src={`${BASE_URL}/${source}?token=${storage.getToken()}`} alt={`detected object ${index + 1}`} />
+                                {/* <ImageHeader 
+                                src={`${BASE_URL}/${source}?token=${storage.getToken()}`}
+                                alt={`detected object ${index + 1}`}
+                                headers={{ 'ngrok-skip-browser-warning': 'lets go'}} 
+                                /> */}
                             </div>
                         ))}
                     </Carousel>
@@ -193,6 +202,12 @@ export default function FrameCard(props: Props) {
                         {sources.map((source, index) => (
                             <div key={index}>
                                 <img src={`${BASE_URL}/${source}?token=${storage.getToken()}`} alt={`detected object ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
+                                {/* <ImageHeader 
+                                src={`${BASE_URL}/${source}?token=${storage.getToken()}`}
+                                alt={`detected object ${index + 1}`} 
+                                headers={{ 'ngrok-skip-browser-warning': 'lets go'}} 
+                                style={{ width: '100%', height: 'auto' }}
+                                /> */}
                             </div>
                         ))}
                     </Carousel>

@@ -6,14 +6,13 @@ import (
 	"lct/internal/config"
 	"lct/internal/database"
 	"lct/internal/logging"
-	"lct/internal/service"
 	"os"
 )
 
-// @title			ЛЦТ-2023 видео-детекция незаконной торговли API
-// @version		0.0.1
-// @description	API документация к решению команды MISIS Banach Space для детекции точек незаконной торгволи
-// @BasePath		/
+//	@title			ЛЦТ-2023 видео-детекция незаконной торговли API
+//	@version		0.0.1
+//	@description	API документация к решению команды MISIS Banach Space для детекции точек незаконной торгволи
+//	@BasePath		/
 func main() {
 	if err := setup(); err != nil {
 		fmt.Printf("error while setting application up: %+v", err)
@@ -41,8 +40,6 @@ func setup() error {
 	if err := database.NewPostgres(10); err != nil {
 		return err
 	}
-
-	service.NewRedis()
 
 	return nil
 }
